@@ -1,0 +1,110 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1404\cocoasubrtf470
+{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;}
+{\colortbl;\red255\green255\blue255;\red92\green38\blue153;\red196\green26\blue22;\red63\green110\blue116;
+\red46\green13\blue110;\red170\green13\blue145;\red28\green0\blue207;\red0\green116\blue0;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\deftab543
+\pard\tx543\pardeftab543\pardirnatural\partightenfactor0
+
+\f0\fs22 \cf0 \CocoaLigature0 \
+- (\cf2 UITableViewCell\cf0 *)createCellWithTitle:(\cf2 NSString\cf0  *)title image:(\cf2 UIImage\cf0  *)image  indexPath:(\cf2 NSIndexPath\cf0 *)indexPath\
+\{\
+    \cf2 NSString\cf0  *CellIdentifier = \cf3 @"Cell"\cf0 ;\
+    \cf4 ExpandableTableViewCell\cf0 * cell = [\cf4 expandableTableV\cf0  \cf5 dequeueReusableCellWithIdentifier\cf0 :CellIdentifier];\
+    \cf6 @try\cf0  \{\
+        cell = \cf6 nil\cf0 ;\
+        \cf6 if\cf0  (cell == \cf6 nil\cf0 ) \{\
+            \
+            cell = [\cf4 expandableTableV\cf0  \cf5 dequeueReusableCellWithIdentifier\cf0 :CellIdentifier];\
+        \}\
+        \
+        \cf6 float\cf0  indentPoints = cell.\cf2 indentationLevel\cf0  * cell.\cf2 indentationWidth\cf0 ;\
+        \
+        cell.\cf2 contentView\cf0 .\cf2 frame\cf0  = \cf5 CGRectMake\cf0 (indentPoints,cell.\cf2 contentView\cf0 .\cf2 frame\cf0 .\cf2 origin\cf0 .\cf2 y\cf0 ,cell.\cf2 contentView\cf0 .\cf2 frame\cf0 .\cf2 size\cf0 .\cf2 width\cf0  - indentPoints,cell.\cf2 contentView\cf0 .\cf2 frame\cf0 .\cf2 size\cf0 .\cf2 height\cf0 );\
+        \
+        \cf2 UILabel\cf0  *titleLabel = (\cf2 UILabel\cf0  *)[cell \cf5 viewWithTag\cf0 :\cf7 6\cf0 ];\
+        titleLabel.\cf2 text\cf0  = title;\
+        [cell \cf5 setIndentationLevel\cf0 :[[[\cf6 self\cf0 .\cf4 itemsInTable\cf0  \cf5 objectAtIndex\cf0 :indexPath.\cf2 row\cf0 ] \cf5 valueForKey\cf0 :\cf3 @"level"\cf0 ] \cf5 intValue\cf0 ]];\
+        cell.\cf2 indentationWidth\cf0  = \cf7 21\cf0 ;\
+        \
+\
+	\}\
+\}\
+(\cf6 void\cf0 )tableView:(\cf2 UITableView\cf0  *)tableView didSelectRowAtIndexPath:(\cf2 NSIndexPath\cf0  *)indexPath\
+\{\
+    \
+    \cf2 UITableViewCell\cf0  *cell = [tableView \cf5 cellForRowAtIndexPath\cf0 :indexPath];\
+    \
+    \cf6 @try\cf0  \{\
+        \cf2 NSString\cf0  *checkValue = [[\cf6 self\cf0 .\cf4 itemsInTable\cf0  \cf5 valueForKey\cf0 :\cf3 @"level"\cf0 ]\cf5 objectAtIndex\cf0 :indexPath.\cf2 row\cf0 ] ;\
+        \cf5 NSLog\cf0 (\cf3 @"%ld"\cf0 ,(\cf6 long\cf0 )indexPath.\cf2 row\cf0 );\
+        \
+        \cf2 UIButton\cf0  *btn = (\cf2 UIButton\cf0  *)[cell \cf5 viewWithTag\cf0 :\cf7 1\cf0 ];\
+        \cf5 NSLog\cf0 (\cf3 @"sssss %@"\cf0 ,\cf4 selectedTitleNameArr\cf0 );\
+        \cf8 // UIButton *btn = (UIButton*)sender;\cf0 \
+        \cf2 CGRect\cf0  buttonFrameInTableView = [btn \cf5 convertRect\cf0 :btn.\cf2 bounds\cf0  \cf5 toView\cf0 :\cf4 expandableTableV\cf0 ];\
+        \cf2 NSIndexPath\cf0  *indexPath1 = [\cf4 expandableTableV\cf0  \cf5 indexPathForRowAtPoint\cf0 :buttonFrameInTableView.\cf2 origin\cf0 ];\
+        \
+        \cf8 // UITableViewCell *cell = (UITableViewCell *)btn.superview.superview;\cf0 \
+        \cf8 // NSIndexPath *indexPath = [expandableTableV indexPathForCell:cell];\cf0 \
+\
+\
+\
+	\}\
+\}\
+\
+\
+-(\cf6 void\cf0 )showSubItems :(\cf6 id\cf0 ) sender\
+\{\
+    \cf6 @try\cf0  \{\
+        \cf5 NSLog\cf0 (\cf3 @"sssss %@"\cf0 ,\cf4 selectedTitleNameArr\cf0 );\
+        \cf2 UIButton\cf0  *btn = (\cf2 UIButton\cf0 *)sender;\
+        \cf2 CGRect\cf0  buttonFrameInTableView = [btn \cf5 convertRect\cf0 :btn.\cf2 bounds\cf0  \cf5 toView\cf0 :\cf4 expandableTableV\cf0 ];\
+        \cf2 NSIndexPath\cf0  *indexPath1 = [\cf4 expandableTableV\cf0  \cf5 indexPathForRowAtPoint\cf0 :buttonFrameInTableView.\cf2 origin\cf0 ];\
+        \
+        \cf2 UITableViewCell\cf0  *cell = (\cf2 UITableViewCell\cf0  *)btn.\cf2 superview\cf0 .\cf2 superview\cf0 ;\
+        \cf2 NSIndexPath\cf0  *indexPath = [\cf4 expandableTableV\cf0  \cf5 indexPathForCell\cf0 :cell];\
+        \
+        \cf2 UILabel\cf0  *TitleLable = (\cf2 UILabel\cf0  *)[cell \cf5 viewWithTag\cf0 :\cf7 6\cf0 ];\
+        \cf2 NSString\cf0  *checkValue = [[\cf6 self\cf0 .\cf4 itemsInTable\cf0  \cf5 valueForKey\cf0 :\cf3 @"level"\cf0 ]\cf5 objectAtIndex\cf0 :indexPath.\cf2 row\cf0 ] ;\
+        \cf5 NSLog\cf0 (\cf3 @"%ld %@"\cf0 ,(\cf6 long\cf0 )indexPath1.\cf2 row\cf0 ,checkValue);\
+        \cf2 UIImageView\cf0  *ArrowimgV = (\cf2 UIImageView\cf0  *)[cell \cf5 viewWithTag\cf0 :\cf7 1\cf0 ];\
+	\}\
+\}\
+-(\cf6 void\cf0 )TableView_Reload_Bottom\
+\{\
+    \cf6 if\cf0  (\cf4 chatArr\cf0 .\cf2 count\cf0 >\cf7 0\cf0 )\
+    \{\
+        [\cf4 chatTableV\cf0  \cf5 reloadData\cf0 ];\
+        \
+        \cf2 NSIndexPath\cf0  *scrollIndexPath = [\cf2 NSIndexPath\cf0  \cf5 indexPathForRow\cf0 :([\cf4 chatArr\cf0  \cf5 count\cf0 ] - \cf7 1\cf0 ) \cf5 inSection\cf0 :\cf7 0\cf0 ];\
+        [\cf4 chatTableV\cf0  \cf5 scrollToRowAtIndexPath\cf0 :scrollIndexPath \cf5 atScrollPosition\cf0 :\cf5 UITableViewScrollPositionBottom\cf0  \cf5 animated\cf0 :\cf6 YES\cf0 ];\
+        \
+        [\cf4 chatTableV\cf0  \cf5 beginUpdates\cf0 ];\
+        [\cf4 chatTableV\cf0  \cf5 reloadRowsAtIndexPaths\cf0 :[\cf2 NSArray\cf0  \cf5 arrayWithObjects\cf0 :scrollIndexPath, \cf6 nil\cf0 ] \cf5 withRowAnimation\cf0 :\cf5 UITableViewRowAnimationNone\cf0 ];\
+        \
+        [\cf4 chatTableV\cf0  \cf5 endUpdates\cf0 ];\
+    \}\
+\}\
+\
+\
+-(\cf6 IBAction\cf0 )BackBtnClickedOfCV:(\cf6 id\cf0 )sender\
+\{\
+    \cf4 app\cf0 .\cf4 GOChatStr\cf0  = \cf3 @"No"\cf0 ;\
+    \cf5 NSLog\cf0 (\cf3 @"%@"\cf0 ,[\cf6 self\cf0 .\cf2 navigationController\cf0 .\cf2 viewControllers\cf0  \cf5 objectAtIndex\cf0 :\cf6 self\cf0 .\cf2 navigationController\cf0 .\cf2 viewControllers\cf0 .\cf2 count\cf0 -\cf7 2\cf0 ]);\
+    \cf2 NSString\cf0  *ViewControllerstr = [\cf2 NSString\cf0  \cf5 stringWithFormat\cf0 :\cf3 @"%@"\cf0 ,[\cf6 self\cf0 .\cf2 navigationController\cf0 .\cf2 viewControllers\cf0  \cf5 objectAtIndex\cf0 :\cf6 self\cf0 .\cf2 navigationController\cf0 .\cf2 viewControllers\cf0 .\cf2 count\cf0 -\cf7 2\cf0 ]];\
+    \cf2 NSRange\cf0  r1 = [ViewControllerstr \cf5 rangeOfString\cf0 :\cf3 @"<"\cf0 ];\
+    \cf2 NSRange\cf0  r2 = [ViewControllerstr \cf5 rangeOfString\cf0 :\cf3 @":"\cf0 ];\
+    \cf2 NSRange\cf0  rSub = \cf5 NSMakeRange\cf0 (r1.\cf2 location\cf0  + r1.\cf2 length\cf0 , r2.\cf2 location\cf0  - r1.\cf2 location\cf0  - r1.\cf2 length\cf0 );\
+    \cf2 NSString\cf0  *sub = [ViewControllerstr \cf5 substringWithRange\cf0 :rSub];\
+    \cf6 if\cf0 ([sub \cf5 isEqualToString\cf0 :\cf3 @"ProfessionalView"\cf0 ])\
+    \{\
+        [\cf6 self\cf0 .\cf2 navigationController\cf0  \cf5 popViewControllerAnimated\cf0 :\cf6 TRUE\cf0 ];\
+    \}\
+    \cf6 else\cf0 \
+    \{\
+        [\cf6 self\cf0 .\cf2 navigationController\cf0  \cf5 popToRootViewControllerAnimated\cf0 :\cf6 TRUE\cf0 ];\
+    \}\
+    \
+\}\
+}

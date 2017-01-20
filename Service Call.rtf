@@ -1,0 +1,27 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1404\cocoasubrtf470
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 @try\
+        \{\
+            NSString *profileIDStr = [NSString stringWithFormat:@"%@",[[self.dataPatientListArray valueForKey:@"id"]objectAtIndex:0]];\
+            NSString *myRequestString =[NSString stringWithFormat:@"\{\\"profileid\\":\\"%@\\"\}",profileIDStr];\
+            jsonServiceNSObjectCall = [[ServiceNSObject alloc]init];\
+            NSDictionary *jsonDictionary =[jsonServiceNSObjectCall JsonPostServiceCall:[NSString stringWithFormat:@"%@/get_patients_payment_pdf.php",DATABASEURL] PostTagSet:myRequestString];\
+            NSLog(@"jsonDictionary :%@",jsonDictionary);\
+            [MBProgressHUD hideHUDForView:self.view animated:YES];\
+            NSString *successStr = [jsonDictionary valueForKey:@"Success"];\
+            NSInteger success = [successStr intValue];\
+            if (success == 1)\
+            \{\
+                listPatientReportArr = [[NSMutableArray alloc]init];\
+                listPatientReportArr = [jsonDictionary valueForKey:@"posts"];\
+                [tbl_listDoctorCheck reloadData];\
+            \}else\{\
+                //patientArr = nil;\
+                [tbl_listDoctorCheck reloadData];\
+            \}\
+            //  app.mapListArr = [patientArr mutableCopy];\
+        \}@catch (NSException * e)\{\}}
