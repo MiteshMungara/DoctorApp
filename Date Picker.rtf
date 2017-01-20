@@ -1,0 +1,302 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1404\cocoasubrtf470
+{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;}
+{\colortbl;\red255\green255\blue255;\red92\green38\blue153;\red46\green13\blue110;\red170\green13\blue145;
+\red63\green110\blue116;\red0\green116\blue0;\red28\green0\blue207;\red196\green26\blue22;\red38\green71\blue75;
+\red100\green56\blue32;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\deftab543
+\pard\tx543\pardeftab543\pardirnatural\partightenfactor0
+
+\f0\fs22 \cf0 \CocoaLigature0  [[\cf2 NSNotificationCenter\cf0  \cf3 defaultCenter\cf0 ] \cf3 addObserver\cf0 :\cf4 self\cf0  \cf3 selector\cf0 :\cf4 @selector\cf0 (keyboardWasShown:) \cf3 name\cf0 :\cf2 UIKeyboardDidShowNotification\cf0  \cf3 object\cf0 :\cf4 nil\cf0 ];\
+    [[\cf2 NSNotificationCenter\cf0  \cf3 defaultCenter\cf0 ] \cf3 addObserver\cf0 :\cf4 self\cf0  \cf3 selector\cf0 :\cf4 @selector\cf0 (keyboardWillBeHidden:) \cf3 name\cf0 :\cf2 UIKeyboardDidHideNotification\cf0  \cf3 object\cf0 :\cf4 nil\cf0 ];\
+   \
+\
+\
+\cf5 datePicker\cf0  = [[\cf2 UIDatePicker\cf0  \cf3 alloc\cf0 ]\cf3 init\cf0 ];;\
+    [\cf5 datePicker\cf0  \cf3 setDate\cf0 :[\cf2 NSDate\cf0  \cf3 date\cf0 ]];\
+    \cf5 datePicker\cf0 .\cf2 datePickerMode\cf0  = \cf3 UIDatePickerModeDate\cf0 ;\
+    [\cf5 datePicker\cf0  \cf3 addTarget\cf0 :\cf4 self\cf0  \cf3 action\cf0 :\cf4 @selector\cf0 (showDateTextField:) \cf3 forControlEvents\cf0 :\cf3 UIControlEventValueChanged\cf0 ];\
+    [\cf5 consultationDateTf\cf0  \cf3 setInputView\cf0 :\cf5 datePicker\cf0 ];\
+    \
+    \cf6 //Time picker\cf0 \
+    \cf5 timePicker\cf0  =  [[\cf2 UIDatePicker\cf0  \cf3 alloc\cf0 ] \cf3 init\cf0 ];\
+    \cf5 timePicker\cf0 .\cf2 datePickerMode\cf0  = \cf3 UIDatePickerModeTime\cf0 ;\
+    \cf5 timePicker\cf0 .\cf2 timeZone\cf0  = [\cf2 NSTimeZone\cf0  \cf3 defaultTimeZone\cf0 ];\
+    \cf5 timePicker\cf0 .\cf2 minuteInterval\cf0  = \cf7 5\cf0 ;\
+    [\cf5 timePicker\cf0  \cf3 addTarget\cf0 :\cf4 self\cf0  \cf3 action\cf0 :\cf4 @selector\cf0 (showTimeOfTextField:) \cf3 forControlEvents\cf0 :\cf3 UIControlEventValueChanged\cf0 ];\
+    [\cf5 consultationTimeTf\cf0  \cf3 setInputView\cf0 :\cf5 timePicker\cf0 ];\
+    \
+    \cf2 UIToolbar\cf0 * numberToolbar = [[\cf2 UIToolbar\cf0  \cf3 alloc\cf0 ]\cf3 initWithFrame\cf0 :\cf3 CGRectMake\cf0 (\cf7 0\cf0 , \cf7 0\cf0 , \cf7 375\cf0 , \cf7 100\cf0 )];\
+    numberToolbar.\cf2 barStyle\cf0  = \cf3 UIBarStyleBlackTranslucent\cf0 ;\
+    numberToolbar.\cf2 barTintColor\cf0  = [\cf2 UIColor\cf0  \cf3 whiteColor\cf0 ];\
+    numberToolbar.\cf2 items\cf0  = \cf7 @[\cf0 [[\cf2 UIBarButtonItem\cf0  \cf3 alloc\cf0 ]\cf3 initWithTitle\cf0 :\cf8 @"Cancel"\cf0  \cf3 style\cf0 :\cf3 UIBarButtonItemStyleBordered\cf0  \cf3 target\cf0 :\cf4 self\cf0  \cf3 action\cf0 :\cf4 @selector\cf0 (cancelNumberPad)],\
+                            [[\cf2 UIBarButtonItem\cf0  \cf3 alloc\cf0 ]\cf3 initWithBarButtonSystemItem\cf0 :\cf3 UIBarButtonSystemItemFlexibleSpace\cf0  \cf3 target\cf0 :\cf4 nil\cf0  \cf3 action\cf0 :\cf4 nil\cf0 ],\
+                            [[\cf2 UIBarButtonItem\cf0  \cf3 alloc\cf0 ]\cf3 initWithTitle\cf0 :\cf8 @"Done"\cf0  \cf3 style\cf0 :\cf3 UIBarButtonItemStyleDone\cf0  \cf3 target\cf0 :\cf4 self\cf0  \cf3 action\cf0 :\cf4 @selector\cf0 (doneWithNumberPad)]\cf7 ]\cf0 ;\
+    [numberToolbar \cf3 sizeToFit\cf0 ];\
+    \
+    \cf5 consultationDateTf\cf0 .\cf2 inputAccessoryView\cf0  = numberToolbar;\
+    \cf5 consultationTimeTf\cf0 .\cf2 inputAccessoryView\cf0  = numberToolbar;\
+    \cf5 tv_ConsulationNotes\cf0 .\cf2 inputAccessoryView\cf0  = numberToolbar;\
+    \cf5 referralNotesTf\cf0 .\cf2 autocapitalizationType\cf0  = \cf3 UITextAutocapitalizationTypeWords\cf0 ;\
+    \
+    \cf2 NSDateFormatter\cf0  *dateFormatter=[[\cf2 NSDateFormatter\cf0  \cf3 alloc\cf0 ] \cf3 init\cf0 ];\
+    \cf2 NSDate\cf0  *eventDate = \cf5 datePicker\cf0 .\cf2 date\cf0 ;\
+    [dateFormatter \cf3 setDateFormat\cf0 :\cf8 @"dd/MM/yyyy"\cf0 ]; \cf6 // or @"yyyy-MM-dd hh:mm:ss a" if you prefer the time with AM/PM\cf0 \
+    \cf3 NSLog\cf0 (\cf8 @"%@"\cf0 ,[dateFormatter \cf3 stringFromDate\cf0 :[\cf2 NSDate\cf0  \cf3 date\cf0 ]]);\
+    \cf5 DateStr\cf0  = [dateFormatter \cf3 stringFromDate\cf0 :eventDate];\
+    \cf5 consultationDateTf\cf0 .\cf2 text\cf0  = \cf5 DateStr\cf0 ;\
+    \
+    \cf5 timePicker\cf0 .\cf2 datePickerMode\cf0  = \cf3 UIDatePickerModeTime\cf0 ;\
+    \cf5 timePicker\cf0 .\cf2 timeZone\cf0  = [\cf2 NSTimeZone\cf0  \cf3 defaultTimeZone\cf0 ];\
+    [dateFormatter \cf3 setDateFormat\cf0 :\cf8 @"h:mm a"\cf0 ];\
+    \cf5 TimerStr\cf0  = [dateFormatter \cf3 stringFromDate\cf0 :\cf5 timePicker\cf0 .\cf2 date\cf0 ];\
+    \cf5 consultationTimeTf\cf0 .\cf2 text\cf0  = \cf5 TimerStr\cf0 ;\
+\
+\
+\
+-(\cf4 void\cf0 )showDateTextField:(\cf4 id\cf0 )sender\
+\{\
+    \cf2 UIDatePicker\cf0  *picker = (\cf2 UIDatePicker\cf0 *)\cf5 consultationDateTf\cf0 .\cf2 inputView\cf0 ;\
+    \cf6 // dateTextOfScan.text = [NSString stringWithFormat:@"%@",picker.date];\cf0 \
+    [picker \cf3 setMinimumDate\cf0 :[\cf2 NSDate\cf0  \cf3 date\cf0 ]];\
+    \cf2 NSDateFormatter\cf0  *dateFormat = [[\cf2 NSDateFormatter\cf0  \cf3 alloc\cf0 ] \cf3 init\cf0 ];\
+    \cf2 NSDate\cf0  *eventDate = picker.\cf2 date\cf0 ;\
+    [dateFormat \cf3 setDateFormat\cf0 :\cf8 @"dd/MM/yyyy"\cf0 ];\
+    \cf2 NSString\cf0  *dateString = [dateFormat \cf3 stringFromDate\cf0 :eventDate];\
+    \cf5 consultationDateTf\cf0 .\cf2 text\cf0  = [\cf2 NSString\cf0  \cf3 stringWithFormat\cf0 :\cf8 @"%@"\cf0 ,dateString];\
+\}\
+-(\cf4 void\cf0 )showTimeOfTextField:(\cf4 id\cf0 )sender\
+\{\
+    \
+    \cf2 UIDatePicker\cf0  *picker = (\cf2 UIDatePicker\cf0 *)\cf5 consultationTimeTf\cf0 .\cf2 inputView\cf0 ;\
+    \cf2 NSDateFormatter\cf0  *dateFormat = [[\cf2 NSDateFormatter\cf0  \cf3 alloc\cf0 ] \cf3 init\cf0 ];\
+    picker.\cf2 datePickerMode\cf0  = \cf3 UIDatePickerModeTime\cf0 ;\
+    picker.\cf2 timeZone\cf0  = [\cf2 NSTimeZone\cf0  \cf3 defaultTimeZone\cf0 ];\
+    [dateFormat \cf3 setDateFormat\cf0 :\cf8 @"h:mm a"\cf0 ];\
+    \cf5 consultationTimeTf\cf0 .\cf2 text\cf0  = [dateFormat \cf3 stringFromDate\cf0 :picker.\cf2 date\cf0 ];\
+\}\
+-(\cf4 void\cf0 )cancelNumberPad\{\
+    \cf4 if\cf0  ([\cf5 consultationDateTf\cf0  \cf3 resignFirstResponder\cf0 ])\
+    \{\
+        [\cf5 consultationDateTf\cf0  \cf3 resignFirstResponder\cf0 ];\
+        \cf5 consultationDateTf\cf0 .\cf2 text\cf0  = \cf8 @""\cf0 ;\
+    \}\
+    \cf4 if\cf0  ([\cf5 consultationTimeTf\cf0  \cf3 resignFirstResponder\cf0 ])\
+    \{\
+        [\cf5 consultationTimeTf\cf0  \cf3 resignFirstResponder\cf0 ];\
+        \cf5 consultationTimeTf\cf0 .\cf2 text\cf0  = \cf8 @""\cf0 ;\
+    \}\
+    \cf4 if\cf0  ([\cf5 tv_ConsulationNotes\cf0  \cf3 resignFirstResponder\cf0 ])\
+    \{\
+        [\cf5 tv_ConsulationNotes\cf0  \cf3 resignFirstResponder\cf0 ];\
+        \cf5 tv_ConsulationNotes\cf0 .\cf2 text\cf0  = \cf8 @""\cf0 ;\
+    \}\
+    \cf4 if\cf0  ([\cf5 referralNotesTf\cf0  \cf3 resignFirstResponder\cf0 ]) \{\
+        [\cf5 referralNotesTf\cf0  \cf3 resignFirstResponder\cf0 ];\
+        \cf5 referralNotesTf\cf0 .\cf2 text\cf0  = \cf8 @""\cf0 ;\
+    \}\
+\}\
+\
+-(\cf4 void\cf0 )doneWithNumberPad\
+\{\
+   \cf6 // NSString *numberFromTheKeyboard123 = consultationDateTf.text;\cf0 \
+    [\cf5 consultationDateTf\cf0  \cf3 resignFirstResponder\cf0 ];\
+    \cf6 //con\cf0 \
+   \cf6 // NSString *numberFromTheKeyboard1 = consultationTimeTf.text;\cf0 \
+    [\cf5 consultationTimeTf\cf0  \cf3 resignFirstResponder\cf0 ];\
+  \cf6 //  NSString *numberFromTheKeyboard2 = tv_ConsulationNotes.text;\cf0 \
+    [\cf5 tv_ConsulationNotes\cf0  \cf3 resignFirstResponder\cf0 ];\
+    [\cf5 referralNotesTf\cf0  \cf3 resignFirstResponder\cf0 ];\
+  \cf6 //  numberFromTheKeyboard123=nil;\cf0 \
+  \cf6 //  numberFromTheKeyboard1=nil;\cf0 \
+ \cf6 //   numberFromTheKeyboard2=nil;\cf0 \
+\}\
+-(\cf4 IBAction\cf0 )DatePickerBtnPressed:(\cf4 id\cf0 )sender\
+\{\
+    [\cf5 consultationDateTf\cf0  \cf3 becomeFirstResponder\cf0 ];\
+\}\
+-(\cf4 IBAction\cf0 )TimePickerBtnPressed:(\cf4 id\cf0 )sender\
+\{\
+    [\cf5 consultationTimeTf\cf0  \cf3 becomeFirstResponder\cf0 ];\
+\}\
+\
+\
+-(\cf4 void\cf0 )doneClickedOFcpv:(\cf4 id\cf0 )sender\
+\{\
+    [\cf4 self\cf0 .\cf2 view\cf0  \cf3 endEditing\cf0 :\cf4 YES\cf0 ];\
+\}\
+\
+==//////////////////////////////////////////////\
+\
+-(\cf4 IBAction\cf0 )pickerBtnClickedOfCPV:(\cf4 id\cf0 )sender\
+\{\
+    [\cf4 self\cf0 .\cf2 view\cf0  \cf3 endEditing\cf0 :\cf4 YES\cf0 ];\
+    [\cf4 self\cf0  \cf9 PickerDown\cf0 ];\
+    [\cf4 self\cf0  \cf9 OpenHiddenAcceptview\cf0 ];\
+    \cf5 statusPicker\cf0 .\cf2 hidden\cf0  = \cf4 YES\cf0 ;\
+    \cf5 returnGpPicker\cf0 .\cf2 hidden\cf0  = \cf4 YES\cf0 ;\
+    \cf5 referralPicker\cf0 .\cf2 hidden\cf0  = \cf4 YES\cf0 ;\
+    \cf2 UIButton\cf0  *btn = (\cf2 UIButton\cf0  *)sender;\
+    \cf4 if\cf0  (btn.\cf2 tag\cf0 ==\cf7 1\cf0 ) \{\
+        \cf5 statusPicker\cf0 .\cf2 hidden\cf0  = \cf4 NO\cf0 ;\
+    \}\cf4 else\cf0  \cf4 if\cf0  (btn.\cf2 tag\cf0 ==\cf7 2\cf0 )\{\
+        \cf5 returnGpPicker\cf0 .\cf2 hidden\cf0  = \cf4 NO\cf0 ;\
+    \}\cf4 else\cf0  \cf4 if\cf0  (btn.\cf2 tag\cf0 ==\cf7 3\cf0 )\{\
+        \cf5 referralPicker\cf0 .\cf2 hidden\cf0  = \cf4 NO\cf0 ;\
+    \}\
+\}\
+-(\cf4 IBAction\cf0 )doneBtnOFPickerPV:(\cf4 id\cf0 )sender\
+\{\
+    [\cf4 self\cf0  \cf9 PickerDown\cf0 ];\
+\}\
+-(\cf4 void\cf0 )OpenHiddenAcceptview\
+\{\
+    \cf4 if\cf0  (\cf5 showPickerCPV\cf0  == \cf4 YES\cf0 )\{\
+        \cf5 showPickerCPV\cf0  = \cf4 NO\cf0 ;\
+        [\cf2 UIView\cf0  \cf3 animateWithDuration\cf0 :\cf7 0.1\cf0 \
+                         \cf3 animations\cf0 :^\{\
+                             \cf2 NSString\cf0  *deviceType = [\cf2 UIDevice\cf0  \cf3 currentDevice\cf0 ].\cf2 model\cf0 ;\
+                             \cf3 NSLog\cf0 (\cf8 @"iphone %@"\cf0 ,deviceType);\
+                             \cf4 if\cf0 ([deviceType \cf3 isEqualToString\cf0 :\cf8 @"iPhone"\cf0 ])\
+                             \{\
+                                 \cf5 setpickerView\cf0 .\cf2 frame\cf0 =\cf3 CGRectMake\cf0 (\cf7 0\cf0 , \cf5 screenBounds\cf0 .\cf2 size\cf0 .\cf2 height\cf0 -\cf7 160\cf0 , \cf5 screenBounds\cf0 .\cf2 size\cf0 .\cf2 width\cf0 , \cf7 160\cf0 );\
+                             \}\
+                             \cf4 else\cf0 \
+                             \{\
+                                 \cf5 setpickerView\cf0 .\cf2 frame\cf0 =\cf3 CGRectMake\cf0 (\cf7 0\cf0 , \cf5 screenBounds\cf0 .\cf2 size\cf0 .\cf2 height\cf0 -\cf7 212\cf0 , \cf5 screenBounds\cf0 .\cf2 size\cf0 .\cf2 width\cf0 , \cf7 212\cf0 );\
+                             \}\
+                             \
+                         \}\cf3 completion\cf0 :^(\cf4 BOOL\cf0  finished)\{;\}];\
+    \}\cf4 else\cf0 \{\
+        [\cf4 self\cf0  \cf9 PickerDown\cf0 ];\
+    \}\
+\}\
+-(\cf4 void\cf0 )PickerDown\
+\{\
+    \cf5 showPickerCPV\cf0  = \cf4 YES\cf0 ;\
+    [\cf2 UIView\cf0  \cf3 animateWithDuration\cf0 :\cf7 0.1\cf0 \
+                     \cf3 animations\cf0 :^\{\
+                         \cf2 NSString\cf0  *deviceType = [\cf2 UIDevice\cf0  \cf3 currentDevice\cf0 ].\cf2 model\cf0 ;\
+                         \cf3 NSLog\cf0 (\cf8 @"iphone %@"\cf0 ,deviceType);\
+                         \cf4 if\cf0 ([deviceType \cf3 isEqualToString\cf0 :\cf8 @"iPhone"\cf0 ])\
+                         \{\
+                             \cf5 setpickerView\cf0 .\cf2 frame\cf0 =\cf3 CGRectMake\cf0 (\cf7 0\cf0 , \cf7 1200\cf0 , \cf5 screenBounds\cf0 .\cf2 size\cf0 .\cf2 width\cf0 , \cf7 160\cf0 );\
+                         \}\
+                         \cf4 else\cf0 \
+                         \{\
+                             \cf5 setpickerView\cf0 .\cf2 frame\cf0 =\cf3 CGRectMake\cf0 (\cf7 0\cf0 , \cf7 1500\cf0 , \cf5 screenBounds\cf0 .\cf2 size\cf0 .\cf2 width\cf0 , \cf7 212\cf0 );\
+                         \}\
+                     \}\cf3 completion\cf0 :^(\cf4 BOOL\cf0  finished)\{;\}];\
+\}\
+\
+\
+\pard\tx543\pardeftab543\pardirnatural\partightenfactor0
+\cf10 #pragma mark - Picker Selected\
+\pard\tx543\pardeftab543\pardirnatural\partightenfactor0
+\cf0 - (\cf2 NSInteger\cf0 )numberOfComponentsInPickerView:(\cf2 UIPickerView\cf0  *)pickerView\
+\{\
+    \cf4 return\cf0  \cf7 1\cf0 ;\
+\}\
+- (\cf2 NSInteger\cf0 )pickerView:(\cf2 UIPickerView\cf0  *)pickerView numberOfRowsInComponent:(\cf2 NSInteger\cf0 )component\
+\{\
+    \cf4 if\cf0  (pickerView.\cf2 tag\cf0 ==\cf7 1\cf0 ) \{\
+        \cf4 return\cf0  \cf5 statusArr\cf0 .\cf2 count\cf0 ;\
+    \}\cf4 else\cf0  \cf4 if\cf0  (pickerView.\cf2 tag\cf0 ==\cf7 2\cf0 )\{\
+        \cf4 return\cf0  \cf5 returnGpArr\cf0 .\cf2 count\cf0 ;\
+    \}\cf4 else\cf0  \cf4 if\cf0  (pickerView.\cf2 tag\cf0 ==\cf7 3\cf0 )\{\
+        \cf4 return\cf0  \cf5 referralArr\cf0 .\cf2 count\cf0 ;\
+    \}\cf4 else\cf0 \{\
+        \cf4 return\cf0  \cf7 0\cf0 ;\
+    \}\
+\}\
+- (\cf2 CGFloat\cf0 )pickerView:(\cf2 UIPickerView\cf0  *)pickerView rowHeightForComponent:(\cf2 NSInteger\cf0 )component\
+\{\
+    \cf4 return\cf0  \cf7 30.0\cf0 ;\
+\}\
+- (\cf2 NSString\cf0  *)pickerView:(\cf2 UIPickerView\cf0  *)pickerView titleForRow:(\cf2 NSInteger\cf0 )row forComponent:(\cf2 NSInteger\cf0 )component\
+\{\
+    \cf4 if\cf0  (pickerView.\cf2 tag\cf0 ==\cf7 1\cf0 ) \{\
+        \cf4 return\cf0  [\cf5 statusArr\cf0  \cf3 objectAtIndex\cf0 :row];\
+    \}\cf4 else\cf0  \cf4 if\cf0  (pickerView.\cf2 tag\cf0 ==\cf7 2\cf0 )\{\
+        \cf4 return\cf0  [\cf5 returnGpArr\cf0  \cf3 objectAtIndex\cf0 :row];\
+    \}\cf4 else\cf0  \cf4 if\cf0  (pickerView.\cf2 tag\cf0 ==\cf7 3\cf0 )\{\
+        \cf4 return\cf0  [\cf5 referralArr\cf0  \cf3 objectAtIndex\cf0 :row];\
+    \}\cf4 else\cf0 \{\
+        \cf4 return\cf0  \cf7 0\cf0 ;\
+    \}\
+\}\
+\
+\
+- (\cf4 void\cf0 )pickerView:(\cf2 UIPickerView\cf0  *)pickerView didSelectRow:(\cf2 NSInteger\cf0 )row inComponent:(\cf2 NSInteger\cf0 )component\
+\{\
+    \cf4 if\cf0  (pickerView.\cf2 tag\cf0 ==\cf7 1\cf0 ) \{\
+        \cf5 statusTf\cf0 .\cf2 text\cf0  = [\cf5 statusArr\cf0  \cf3 objectAtIndex\cf0 :row];\
+    \}\cf4 else\cf0  \cf4 if\cf0  (pickerView.\cf2 tag\cf0 ==\cf7 2\cf0 )\{\
+        \cf5 adviceReturnGPTf\cf0 .\cf2 text\cf0  = [\cf5 returnGpArr\cf0  \cf3 objectAtIndex\cf0 :row];\
+    \}\cf4 else\cf0  \cf4 if\cf0  (pickerView.\cf2 tag\cf0 ==\cf7 3\cf0 )\{\
+        \cf5 referralTf\cf0 .\cf2 text\cf0  = [\cf5 referralArr\cf0  \cf3 objectAtIndex\cf0 :row];\
+    \}\
+\}\
+\
+\
+\pard\tx543\pardeftab543\pardirnatural\partightenfactor0
+\cf10 #pragma mark - Text delegate\
+\pard\tx543\pardeftab543\pardirnatural\partightenfactor0
+\cf0 - (\cf4 void\cf0 )textFieldDidBeginEditing:(\cf2 UITextField\cf0  *)textField\
+\{\
+    [\cf4 self\cf0  \cf9 PickerDown\cf0 ];\
+\}\
+-(\cf4 void\cf0 )keyboardWillBeHidden:(\cf2 NSNotification\cf0  *)notification\
+\{\
+    \cf2 UIEdgeInsets\cf0  contentInsets = \cf2 UIEdgeInsetsZero\cf0 ;\
+    \cf5 cpInfoScrollV\cf0 .\cf2 contentInset\cf0  = contentInsets;\
+    \cf5 cpInfoScrollV\cf0 .\cf2 scrollIndicatorInsets\cf0  = contentInsets;\
+\}\
+-(\cf4 BOOL\cf0 )textFieldShouldReturn:(\cf2 UITextField\cf0  *)textField\
+\{\
+    [textField \cf3 resignFirstResponder\cf0 ];\
+    \cf4 return\cf0  \cf4 YES\cf0 ;\
+\}\
+-(\cf4 void\cf0 )keyboardWasShown:(\cf2 NSNotification\cf0 *)notification\
+\{\
+    \cf2 NSDictionary\cf0  *info = [notification \cf3 userInfo\cf0 ];\
+    \cf2 CGSize\cf0  kbSize = [[info \cf3 objectForKey\cf0 :\cf2 UIKeyboardFrameBeginUserInfoKey\cf0 ] \cf3 CGRectValue\cf0 ].\cf2 size\cf0 ;\
+    \cf2 UIEdgeInsets\cf0  contentInsets = \cf3 UIEdgeInsetsMake\cf0 (\cf4 self\cf0 .\cf2 view\cf0 .\cf2 frame\cf0 .\cf2 origin\cf0 .\cf2 x\cf0 ,\cf4 self\cf0 .\cf2 view\cf0 .\cf2 frame\cf0 .\cf2 origin\cf0 .\cf2 y\cf0 , kbSize.\cf2 height\cf0 , \cf7 30\cf0 );\
+    \cf5 cpInfoScrollV\cf0 .\cf2 contentInset\cf0  = contentInsets;\
+    \cf5 cpInfoScrollV\cf0 .\cf2 scrollIndicatorInsets\cf0  = contentInsets;\
+\}\
+\pard\tx543\pardeftab543\pardirnatural\partightenfactor0
+\cf10 # pragma mark - View touch\
+\pard\tx543\pardeftab543\pardirnatural\partightenfactor0
+\cf0 - (\cf4 void\cf0 )touchesBegan:(\cf2 NSSet\cf0  *)touches withEvent:(\cf2 UIEvent\cf0  *)event\
+\{\
+    [\cf4 self\cf0  \cf9 PickerDown\cf0 ];\
+    [\cf4 self\cf0 .\cf2 view\cf0  \cf3 endEditing\cf0 :\cf4 YES\cf0 ];\
+    [\cf4 super\cf0  \cf3 touchesBegan\cf0 :touches \cf3 withEvent\cf0 :event];\
+\}\
+\pard\tx543\pardeftab543\pardirnatural\partightenfactor0
+\cf10 # pragma mark - Stop\
+\pard\tx543\pardeftab543\pardirnatural\partightenfactor0
+\cf0 - (\cf4 void\cf0 )didReceiveMemoryWarning \{\
+    [\cf4 super\cf0  \cf3 didReceiveMemoryWarning\cf0 ];\
+    \cf6 // Dispose of any resources that can be recreated.\cf0 \
+\}\
+- (\cf4 void\cf0 )prepareForSegue:(\cf2 UIStoryboardSegue\cf0  *)segue sender:(\cf4 id\cf0 )sender \{\
+    \
+    \cf4 if\cf0  ([[segue \cf3 identifier\cf0 ] \cf3 isEqualToString\cf0 :\cf8 @"CurrentMedicationView"\cf0 ]) \{\
+        \cf5 CurrentMedicationView\cf0  *vc = (\cf5 CurrentMedicationView\cf0  *)segue.\cf2 destinationViewController\cf0 ;\
+        vc.\cf5 StatusStr\cf0  = \cf5 CheckStr\cf0 ;\
+    \}\
+    \cf4 if\cf0  ([[segue \cf3 identifier\cf0 ] \cf3 isEqualToString\cf0 :\cf8 @"SearchMediacationViewController"\cf0 ]) \{\
+        \cf5 SearchViewController\cf0  *vc = (\cf5 SearchViewController\cf0  *)segue.\cf2 destinationViewController\cf0 ;\
+        vc.\cf5 MultiSelectStr\cf0  = \cf5 MultiSelectStr\cf0 ;\
+    \}\
+    \cf6 // if ([[segue identifier] isEqualToString:@"GetAllergyViewController"]) \{\cf0 \
+    \cf6 //  GetAllergyViewController *vc = (GetAllergyViewController *)segue.destinationViewController;\cf0 \
+    \cf6 //vc.MultiSelectStr = MultiSelectStr;\cf0 \
+    \cf6 //  \}\cf0 \
+    \
+\}\
+\
+\
+}

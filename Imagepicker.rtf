@@ -1,0 +1,151 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1404\cocoasubrtf470
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 \
+-(IBAction)cameraBtnPressed:(id)sender\{\
+\
+    NSString *other1 = @"Take a photo";\
+    NSString *other2 = @"Choose Existing Photo";\
+    \
+    NSString *cancelTitle = @"Cancle";\
+    UIActionSheet *actionSheet = [[UIActionSheet alloc]\
+                                  initWithTitle:nil\
+                                  delegate:self\
+                                  cancelButtonTitle:cancelTitle\
+                                  destructiveButtonTitle:nil\
+                                  otherButtonTitles:other1, other2, nil];\
+    [actionSheet showInView:self.view];\
+\}\
+\
+\
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex ; \{\
+    if(buttonIndex==0)\
+    \{\
+        UIImagePickerController *imagePickerController = [[UIImagePickerController alloc]init];\
+        imagePickerController = [[UIImagePickerController alloc] init];\
+        imagePickerController.delegate = self;\
+        imagePickerController.sourceType =  UIImagePickerControllerSourceTypeCamera;\
+        [self presentViewController:imagePickerController animated:YES completion:nil];\
+    \}else if(buttonIndex==1)\
+    \{\
+        UIImagePickerController *imagePickerController = [[UIImagePickerController alloc]init];\
+        imagePickerController = [[UIImagePickerController alloc] init];\
+        imagePickerController.delegate = self;\
+        imagePickerController.sourceType =  UIImagePickerControllerSourceTypePhotoLibrary;\
+        imagePickerController.sourceType= UIImagePickerControllerSourceTypePhotoLibrary;\
+        [self presentViewController:imagePickerController animated:YES completion:nil];\
+    \}\
+\}\
+\
+\
+-(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info\
+\{\
+    if(picked  == 1)\
+    \{\
+        picked=0;\
+    \}\
+    else\
+    \{\
+        thumbleImage.image = nil;\
+        UIImage *image = info[UIImagePickerControllerEditedImage];\
+        if(!image)image=info[UIImagePickerControllerOriginalImage];\
+        thumbleImage.image  = [self rotateUIImage:image];\
+        NSLog(@"Scaling photo");\
+        [self dismissViewControllerAnimated:YES completion:nil];\
+        picked=1;\
+    \}\
+    \
+\}\
+\
+\
+\
+-(UIImage*)rotateUIImage:(UIImage*)src \{\
+    \
+    // No-op if the orientation is already correct\
+    if (src.imageOrientation == UIImageOrientationUp) return src ;\
+    \
+    // We need to calculate the proper transformation to make the image upright.\
+    // We do it in 2 steps: Rotate if Left/Right/Down, and then flip if Mirrored.\
+    CGAffineTransform transform = CGAffineTransformIdentity;\
+    \
+    switch (src.imageOrientation) \{\
+        case UIImageOrientationDown:\
+        case UIImageOrientationDownMirrored:\
+            transform = CGAffineTransformTranslate(transform, src.size.width, src.size.height);\
+            transform = CGAffineTransformRotate(transform, M_PI);\
+            break;\
+            \
+        case UIImageOrientationLeft:\
+        case UIImageOrientationLeftMirrored:\
+            transform = CGAffineTransformTranslate(transform, src.size.width, 0);\
+            transform = CGAffineTransformRotate(transform, M_PI_2);\
+            break;\
+            \
+        case UIImageOrientationRight:\
+        case UIImageOrientationRightMirrored:\
+            transform = CGAffineTransformTranslate(transform, 0, src.size.height);\
+            transform = CGAffineTransformRotate(transform, -M_PI_2);\
+            break;\
+        case UIImageOrientationUp:\
+        case UIImageOrientationUpMirrored:\
+            break;\
+    \}\
+    \
+    switch (src.imageOrientation) \{\
+        case UIImageOrientationUpMirrored:\
+        case UIImageOrientationDownMirrored:\
+            transform = CGAffineTransformTranslate(transform, src.size.width, 0);\
+            transform = CGAffineTransformScale(transform, -1, 1);\
+            break;\
+            \
+        case UIImageOrientationLeftMirrored:\
+        case UIImageOrientationRightMirrored:\
+            transform = CGAffineTransformTranslate(transform, src.size.height, 0);\
+            transform = CGAffineTransformScale(transform, -1, 1);\
+            break;\
+        case UIImageOrientationUp:\
+        case UIImageOrientationDown:\
+        case UIImageOrientationLeft:\
+        case UIImageOrientationRight:\
+            break;\
+    \}\
+    \
+    // Now we draw the underlying CGImage into a new context, applying the transform\
+    // calculated above.\
+    CGContextRef ctx = CGBitmapContextCreate(NULL, src.size.width, src.size.height,\
+                                             CGImageGetBitsPerComponent(src.CGImage), 0,\
+                                             CGImageGetColorSpace(src.CGImage),\
+                                             CGImageGetBitmapInfo(src.CGImage));\
+    CGContextConcatCTM(ctx, transform);\
+    switch (src.imageOrientation) \{\
+        case UIImageOrientationLeft:\
+        case UIImageOrientationLeftMirrored:\
+        case UIImageOrientationRight:\
+        case UIImageOrientationRightMirrored:\
+            // Grr...\
+            CGContextDrawImage(ctx, CGRectMake(0,0,src.size.height,src.size.width), src.CGImage);\
+            break;\
+            \
+        default:\
+            CGContextDrawImage(ctx, CGRectMake(0,0,src.size.width,src.size.height), src.CGImage);\
+            break;\
+    \}\
+    \
+    // And now we just create a new UIImage from the drawing context\
+    CGImageRef cgimg = CGBitmapContextCreateImage(ctx);\
+    UIImage *img = [UIImage imageWithCGImage:cgimg];\
+    CGContextRelease(ctx);\
+    CGImageRelease(cgimg);\
+    return img;\
+\}\
+\
+\
+\
+-(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker\
+\{\
+   \
+    [picker dismissViewControllerAnimated:YES completion:nil];\
+\}}

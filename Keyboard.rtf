@@ -1,0 +1,305 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1404\cocoasubrtf470
+{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;\f1\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;\red92\green38\blue153;\red46\green13\blue110;\red170\green13\blue145;
+\red63\green110\blue116;\red28\green0\blue207;\red196\green26\blue22;\red0\green116\blue0;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\deftab543
+\pard\tx543\pardeftab543\pardirnatural\partightenfactor0
+
+\f0\fs22 \cf2 \CocoaLigature0 UIBarButtonItem\cf0  *fixedItem = [[\cf2 UIBarButtonItem\cf0  \cf3 alloc\cf0 ] \cf3 initWithBarButtonSystemItem\cf0 :\cf3 UIBarButtonSystemItemFixedSpace\cf0  \cf3 target\cf0 :\cf4 nil\cf0  \cf3 action\cf0 :\cf4 nil\cf0 ];\
+    fixedItem.\cf2 width\cf0  = \cf5 screenBounds\cf0 .\cf2 size\cf0 .\cf2 width\cf0 -\cf6 80\cf0 ;\
+    \cf2 UIToolbar\cf0 * keyboardDoneButtonView = [[\cf2 UIToolbar\cf0  \cf3 alloc\cf0 ] \cf3 init\cf0 ];\
+    [keyboardDoneButtonView \cf3 sizeToFit\cf0 ];\
+    \cf2 UIBarButtonItem\cf0 * doneButton = [[\cf2 UIBarButtonItem\cf0  \cf3 alloc\cf0 ] \cf3 initWithTitle\cf0 :\cf7 @"Done"\cf0 \
+                                                                   \cf3 style\cf0 :\cf3 UIBarButtonItemStylePlain\cf0  \cf3 target\cf0 :\cf4 self\cf0 \
+                                                                  \cf3 action\cf0 :\cf4 @selector\cf0 (doneClickedOFcpv:)];\
+    [keyboardDoneButtonView \cf3 setItems\cf0 :[\cf2 NSArray\cf0  \cf3 arrayWithObjects\cf0 :fixedItem,doneButton, \cf4 nil\cf0 ]];\
+    \cf5 bloodPressureTf\cf0 .\cf2 inputAccessoryView\cf0  = keyboardDoneButtonView;\
+    \cf5 pulseTf\cf0 .\cf2 inputAccessoryView\cf0  = keyboardDoneButtonView;\
+    \cf5 respirationRateTf\cf0 .\cf2 inputAccessoryView\cf0  = keyboardDoneButtonView;\
+    \cf5 bloodPressureTf\cf0 .\cf2 inputAccessoryView\cf0  = keyboardDoneButtonView;\
+    \cf5 weightTf\cf0 .\cf2 inputAccessoryView\cf0  = keyboardDoneButtonView;\
+    \cf5 referralNotesTf\cf0 .\cf2 inputAccessoryView\cf0  = keyboardDoneButtonView;\
+    \cf8 //\cf0 \
+    \cf5 manifestationTf\cf0 .\cf2 autocapitalizationType\cf0  = \cf3 UITextAutocapitalizationTypeWords\cf0 ;\
+    \cf5 currencyImmunisationTf\cf0 .\cf2 autocapitalizationType\cf0  = \cf3 UITextAutocapitalizationTypeWords\cf0 ;\
+    \cf5 temperatureTf\cf0 .\cf2 autocapitalizationType\cf0  = \cf3 UITextAutocapitalizationTypeWords\cf0 ;\
+    \cf5 consultationNotesTf\cf0 .\cf2 autocapitalizationType\cf0  = \cf3 UITextAutocapitalizationTypeWords\cf0 ;\
+    \cf5 differentialDiagnosisTf\cf0 .\cf2 autocapitalizationType\cf0  = \cf3 UITextAutocapitalizationTypeWords\cf0 ;\
+    \cf5 lifeStyleChangesTf\cf0 .\cf2 autocapitalizationType\cf0  = \cf3 UITextAutocapitalizationTypeWords\cf0 ;\
+    \cf5 managementPlanTf\cf0 .\cf2 autocapitalizationType\cf0  = \cf3 UITextAutocapitalizationTypeWor\
+\
+\cf0 \
+-(\cf4 void\cf0 )cancelNumberPad\{\
+    \cf4 if\cf0  ([\cf5 consultationDateTf\cf0  \cf3 resignFirstResponder\cf0 ])\
+    \{\
+        [\cf5 consultationDateTf\cf0  \cf3 resignFirstResponder\cf0 ];\
+        \cf5 consultationDateTf\cf0 .\cf2 text\cf0  = \cf7 @""\cf0 ;\
+    \}\
+    \cf4 if\cf0  ([\cf5 consultationTimeTf\cf0  \cf3 resignFirstResponder\cf0 ])\
+    \{\
+        [\cf5 consultationTimeTf\cf0  \cf3 resignFirstResponder\cf0 ];\
+        \cf5 consultationTimeTf\cf0 .\cf2 text\cf0  = \cf7 @""\cf0 ;\
+    \}\
+    \cf4 if\cf0  ([\cf5 tv_ConsulationNotes\cf0  \cf3 resignFirstResponder\cf0 ])\
+    \{\
+        [\cf5 tv_ConsulationNotes\cf0  \cf3 resignFirstResponder\cf0 ];\
+        \cf5 tv_ConsulationNotes\cf0 .\cf2 text\cf0  = \cf7 @""\cf0 ;\
+    \}\
+    \cf4 if\cf0  ([\cf5 referralNotesTf\cf0  \cf3 resignFirstResponder\cf0 ]) \{\
+        [\cf5 referralNotesTf\cf0  \cf3 resignFirstResponder\cf0 ];\
+        \cf5 referralNotesTf\cf0 .\cf2 text\cf0  = \cf7 @""\cf0 ;\
+    \}\
+\}\
+\
+-(\cf4 void\cf0 )doneWithNumberPad\
+\{\
+   \cf8 // NSString *numberFromTheKeyboard123 = consultationDateTf.text;\cf0 \
+    [\cf5 consultationDateTf\cf0  \cf3 resignFirstResponder\cf0 ];\
+    \cf8 //con\cf0 \
+   \cf8 // NSString *numberFromTheKeyboard1 = consultationTimeTf.text;\cf0 \
+    [\cf5 consultationTimeTf\cf0  \cf3 resignFirstResponder\cf0 ];\
+  \cf8 //  NSString *numberFromTheKeyboard2 = tv_ConsulationNotes.text;\cf0 \
+    [\cf5 tv_ConsulationNotes\cf0  \cf3 resignFirstResponder\cf0 ];\
+    [\cf5 referralNotesTf\cf0  \cf3 resignFirstResponder\cf0 ];\
+  \cf8 //  numberFromTheKeyboard123=nil;\cf0 \
+  \cf8 //  numberFromTheKeyboard1=nil;\cf0 \
+ \cf8 //   numberFromTheKeyboard2=nil;\cf0 \
+\}\
+\
+
+\f1\fs24 \CocoaLigature1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 #pragma mark - TextFile Type\
+-(BOOL)textFieldShouldReturn:(UITextField *)textField\
+\{\
+    [textField resignFirstResponder];\
+    return YES;\
+\}\
+\
+- (void)textFieldDidBeginEditing:(UITextField *)textField\
+\{\
+   [self animateTextField:textField up:YES];\
+\}\
+-(void)textFieldDidEndEditing:(UITextField *)textField\
+\{\
+    [self animateTextField:textField up:NO];\
+\}\
+- (void)animateTextField:(UITextField*)textField up:(BOOL)up\
+\{\
+    \
+    CGRect frame = self.view.frame;\
+    CGFloat keyboardHeight = 200.f;\
+    \
+    if (up)\
+    \{\
+        CGRect textFieldFrame = textField.frame;\
+        CGFloat bottomYPos = textFieldFrame.origin.y + textFieldFrame.size.height;\
+        \
+        animateDistance = bottomYPos + 100 + keyboardHeight - frame.size.height;\
+        if (animateDistance < 0)\
+            animateDistance = 0;\
+        else\
+            animateDistance = fabs(animateDistance);\
+    \}\
+    \
+    [UIView beginAnimations:nil context:NULL];\
+    [UIView setAnimationBeginsFromCurrentState:YES];\
+    [UIView setAnimationDuration:0.25];\
+    \
+    if (!(!up && frame.origin.y == 20.f)) \{\
+        if (self.interfaceOrientation == UIDeviceOrientationPortrait)\
+            frame.origin.y = frame.origin.y + (up ? -animateDistance : animateDistance);\
+        else if (self.interfaceOrientation == UIDeviceOrientationPortraitUpsideDown)\
+            frame.origin.y = frame.origin.y + (up ? animateDistance : -animateDistance);\
+        self.view.frame = frame;\
+    \}\
+    \
+    [UIView commitAnimations];\
+\}\
+\
+\
+\
+- (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event\
+\{\
+    [[self view] endEditing:YES];\
+\}\
+\
+\
+\
+-(void)textviewchenge\{\
+    \
+    NSString *deviceType = [UIDevice currentDevice].model;\
+    NSLog(@"iphone %@",deviceType);\
+    if([deviceType isEqualToString:@"iPhone"])\
+    \{\
+        [additionalinfoTextView setText:@"\\nAdditional Info"];\
+        [additionalinfoTextView setFont:[UIFont fontWithName:@"HelveticaNeue" size:14]];\
+        [additionalinfoTextView setTextColor:[UIColor lightGrayColor]];\
+        [additionalinfoTextView scrollRangeToVisible:NSMakeRange(0, 0)];\
+        \
+    \}\
+    else if([deviceType isEqualToString:@"iPhone Simulator"])\
+    \{\
+        \
+        [additionalinfoTextView setText:@"Additional Info"];\
+        [additionalinfoTextView setFont:[UIFont fontWithName:@"HelveticaNeue" size:14]];\
+        [additionalinfoTextView setTextColor:[UIColor lightGrayColor]];\
+        [additionalinfoTextView scrollRangeToVisible:NSMakeRange(0, 0)];\
+        \
+    \}\
+    else\
+    \{\
+      \
+        [additionalinfoTextView setText:@"\\nAdditional Info"];\
+        [additionalinfoTextView setFont:[UIFont fontWithName:@"HelveticaNeue" size:20]];\
+        [additionalinfoTextView setTextColor:[UIColor lightGrayColor]];\
+        [additionalinfoTextView scrollRangeToVisible:NSMakeRange(0, 0)];\
+    \}\
+   \
+   \
+\}\
+\
+-(void) textViewDidBeginEditing:(UITextView *)textView\
+\{\
+    NSString *deviceType = [UIDevice currentDevice].model;\
+    NSLog(@"iphone %@",deviceType);\
+    if([deviceType isEqualToString:@"iPhone"])\
+    \{\
+        \
+        if ([textView.text isEqual:@"Additional Info"])\
+        \{\
+            additionalinfoTextView.text = @"";\
+            additionalinfoTextView.textColor = [UIColor blackColor];\
+            \
+        \}\
+        \
+        CGRect textFieldRect = [self.view.window convertRect:textView.bounds fromView:textView];\
+        CGRect viewRect = [self.view.window convertRect:self.view.bounds fromView:self.view];\
+        \
+        CGFloat midline = textFieldRect.origin.y + 0.5 * textFieldRect.size.height;\
+        CGFloat numerator = midline - viewRect.origin.y - MINIMUM_SCROLL_FRACTION * viewRect.size.height;\
+        CGFloat denominator = (MAXIMUM_SCROLL_FRACTION - MINIMUM_SCROLL_FRACTION) * viewRect.size.height;\
+        CGFloat heightFraction = numerator / denominator;\
+        \
+        if(heightFraction < 0.0)\{\
+            \
+            heightFraction = 0.0;\
+            \
+        \}else if(heightFraction > 1.0)\{\
+            \
+            heightFraction = 1.0;\
+        \}\
+        UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];\
+        \
+        if(orientation == UIInterfaceOrientationPortrait || orientation == UIInterfaceOrientationPortraitUpsideDown)\{\
+            \
+            animateDistance = floor(PORTRAIT_KEYBOARD_HEIGHT * heightFraction);\
+            \
+        \}else\{\
+            \
+            animateDistance = floor(LANDSCAPE_KEYBOARD_HEIGHT * heightFraction);\
+        \}\
+        \
+        CGRect viewFrame = self.view.frame;\
+        viewFrame.origin.y -= animateDistance;\
+        \
+        [UIView beginAnimations:nil context:NULL];\
+        [UIView setAnimationBeginsFromCurrentState:YES];\
+        [UIView setAnimationDuration:KEYBOARD_ANIMATION_DURATION];\
+        \
+        [self.view setFrame:viewFrame];\
+        \
+        [UIView commitAnimations];\
+    \}\
+    else\
+    \{\
+       \
+        if ([textView.text isEqual:@"\\nAdditional Info"])\
+        \{\
+            additionalinfoTextView.text = @"";\
+            additionalinfoTextView.textColor = [UIColor blackColor];\
+            \
+        \}\
+       \
+        CGRect textFieldRect = [self.view.window convertRect:textView.bounds fromView:textView];\
+        CGRect viewRect = [self.view.window convertRect:self.view.bounds fromView:self.view];\
+        \
+        CGFloat midline = textFieldRect.origin.y + 0.5 * textFieldRect.size.height;\
+        CGFloat numerator = midline - viewRect.origin.y - MINIMUM_SCROLL_FRACTION * viewRect.size.height;\
+        CGFloat denominator = (MAXIMUM_SCROLL_FRACTION - MINIMUM_SCROLL_FRACTION) * viewRect.size.height;\
+        CGFloat heightFraction = numerator / denominator;\
+        \
+        if(heightFraction < 0.0)\{\
+            \
+            heightFraction = 0.0;\
+            \
+        \}else if(heightFraction > 1.0)\{\
+            \
+            heightFraction = 1.0;\
+        \}\
+        UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];\
+        \
+        if(orientation == UIInterfaceOrientationPortrait || orientation == UIInterfaceOrientationPortraitUpsideDown)\{\
+            \
+            animateDistance = floor(PORTRAIT_KEYBOARD_HEIGHT * heightFraction);\
+            \
+        \}else\{\
+            \
+            animateDistance = floor(LANDSCAPE_KEYBOARD_HEIGHT * heightFraction);\
+        \}\
+        \
+        CGRect viewFrame = self.view.frame;\
+        viewFrame.origin.y -= animateDistance;\
+        \
+        [UIView beginAnimations:nil context:NULL];\
+        [UIView setAnimationBeginsFromCurrentState:YES];\
+        [UIView setAnimationDuration:KEYBOARD_ANIMATION_DURATION];\
+        \
+        [self.view setFrame:viewFrame];\
+        \
+        [UIView commitAnimations];\
+    \}\
+\}\
+- (void)textViewDidEndEditing:(UITextView *)textView\
+\{\
+    NSString *deviceType = [UIDevice currentDevice].model;\
+    NSLog(@"iphone %@",deviceType);\
+    if([deviceType isEqualToString:@"iPhone"])\
+    \{\
+        CGRect viewFrame = self.view.frame;\
+        viewFrame.origin.y += animateDistance;\
+        [UIView beginAnimations:nil context:NULL];\
+        [UIView setAnimationBeginsFromCurrentState:YES];\
+        [UIView setAnimationDuration:KEYBOARD_ANIMATION_DURATION];\
+        \
+        [self.view setFrame:viewFrame];\
+        [UIView commitAnimations];\
+        \
+     \
+        if(additionalinfoTextView.text.length == 0)\{\
+            additionalinfoTextView.textColor = [UIColor lightGrayColor];\
+            additionalinfoTextView.text = @"Additional Info";\
+            [additionalinfoTextView resignFirstResponder];\
+        \}\
+    \}\
+    else\
+    \{\
+        CGRect viewFrame = self.view.frame;\
+        viewFrame.origin.y += animateDistance;\
+        [UIView beginAnimations:nil context:NULL];\
+        [UIView setAnimationBeginsFromCurrentState:YES];\
+        [UIView setAnimationDuration:KEYBOARD_ANIMATION_DURATION];\
+        \
+        [self.view setFrame:viewFrame];\
+        [UIView commitAnimations];\
+        \
+        if(additionalinfoTextView.text.length == 0)\{\
+            additionalinfoTextView.textColor = [UIColor lightGrayColor];\
+            additionalinfoTextView.text = @"\\nAdditional Info";\
+            [additionalinfoTextView resignFirstResponder];\
+        \}\
+      \
+\
+    \}\
+\}}
